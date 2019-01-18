@@ -5,9 +5,8 @@
     <v-btn block color="primary" v-on:click="sendMessage">Send message</v-btn>
     <v-btn block color="primary" v-on:click="closeWindow">Close window</v-btn>
 
-    <div>userId : {{userId}}</div>
+    <div>userId      : {{userId}}</div>
     <div>displayName : {{displayName}}</div>
-    <div>message : {{message}}</div>
   </v-container>
 </template>
 
@@ -17,17 +16,13 @@ import liff from "liff";
 export default {
   data: () => ({
     userId: "",
-    displayName: "",
-    message: ""
+    displayName: ""
   }),
   beforeCreate: function() {
     liff.init(
-      data => {
-        console.log("LIFF initialization succeeded.");
-        console.log(data);
-      },
+      data => {},
       err => {
-        this.message = `${err.code}:${err.message}`;
+        alert(err.message);
       }
     );
   },
@@ -39,19 +34,25 @@ export default {
       });
     },
     getProfile: function() {
-      liff.getProfile().then(profile => {
-        this.userId = profile.userId;
-        this.displayName = profile.displayName;
-      }).catch(err=>{
-        this.message = `${err.code}:${err.message}`;
-      });
+      liff
+        .getProfile()
+        .then(profile => {
+          this.userId = profile.userId;
+          this.displayName = profile.displayName;
+        })
+        .catch(err => {
+          alert(err.message);
+        });
     },
     sendMessage: function() {
-      liff.sendMessages([{ type: "text", text: "Hello, World!" }]).then(() => {
-        console.log("message sent");
-      }).catch(err=>{
-        this.message = `${err.code}:${err.message}`;
-      });
+      liff
+        .sendMessages([{ type: "text", text: "Hello, World!" }])
+        .then(() => {
+          alert("message sent");
+        })
+        .catch(err => {
+          alert(err.message);
+        });
     },
     closeWindow: function() {
       liff.closeWindow();
