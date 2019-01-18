@@ -7,7 +7,7 @@
 
     <div>userId : {{userId}}</div>
     <div>displayName : {{displayName}}</div>
-    <div>error : {{error}}</div>
+    <div>message : {{message}}</div>
   </v-container>
 </template>
 
@@ -17,7 +17,8 @@ import liff from "liff";
 export default {
   data: () => ({
     userId: "",
-    displayName: ""
+    displayName: "",
+    message: ""
   }),
   beforeCreate: function() {
     liff.init(
@@ -26,7 +27,7 @@ export default {
         console.log(data);
       },
       err => {
-        this.error = `${err.code}:${err.message}`;
+        this.message = `${err.code}:${err.message}`;
       }
     );
   },
@@ -41,11 +42,15 @@ export default {
       liff.getProfile().then(profile => {
         this.userId = profile.userId;
         this.displayName = profile.displayName;
+      }).catch(err=>{
+        this.message = `${err.code}:${err.message}`;
       });
     },
     sendMessage: function() {
       liff.sendMessages([{ type: "text", text: "Hello, World!" }]).then(() => {
         console.log("message sent");
+      }).catch(err=>{
+        this.message = `${err.code}:${err.message}`;
       });
     },
     closeWindow: function() {
