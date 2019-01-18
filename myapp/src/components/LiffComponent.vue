@@ -5,9 +5,9 @@
     <v-btn block color="primary" v-on:click="sendMessage">Send message</v-btn>
     <v-btn block color="primary" v-on:click="closeWindow">Close window</v-btn>
 
-    <div>userId      : {{userId}}</div>
+    <div>userId : {{userId}}</div>
     <div>displayName : {{displayName}}</div>
-    <div>error       : {{error}}</div>
+    <div>error : {{error}}</div>
   </v-container>
 </template>
 
@@ -16,8 +16,8 @@ import liff from "liff";
 
 export default {
   data: () => ({
-    userId: '',
-    displayName: ''
+    userId: "",
+    displayName: ""
   }),
   beforeCreate: function() {
     liff.init(
@@ -44,12 +44,9 @@ export default {
       });
     },
     sendMessage: function() {
-      liff.sendMessages([
-        {
-          type: "text",
-          text: "Hello, World!"
-        }
-      ]);
+      liff.sendMessages([{ type: "text", text: "Hello, World!" }]).then(() => {
+        console.log("message sent");
+      });
     },
     closeWindow: function() {
       liff.closeWindow();
